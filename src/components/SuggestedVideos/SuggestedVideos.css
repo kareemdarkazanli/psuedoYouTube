@@ -1,7 +1,5 @@
 .side-panel {
     float: right;
-    height: 800px;
     width: 400px;
     margin-left: 20px;
-    display: inline-block;
 }

@@ -9,7 +9,9 @@ const suggestedVideos= (props) => {
             {
                 
                 props.suggestedVideos.map(function(suggestedVideo, index){
-                    return <Thumbnail key={index} video={suggestedVideo} click={props.click}></Thumbnail>
+                    if(props.currentVideoId != suggestedVideo["id"]["videoId"]){
+                        return <Thumbnail key={index} videoId={suggestedVideo["id"]["videoId"]} title={suggestedVideo["snippet"]["title"]} channelTitle={suggestedVideo["snippet"]["channelTitle"]} thumbnailURL={suggestedVideo["snippet"]["thumbnails"]["high"]["url"]} click={props.click}></Thumbnail>
+                    }
                 })
                
             }

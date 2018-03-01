@@ -25,5 +25,13 @@
     display: inline-block;
 }
 
+.hamburger-icon {
+    object-fit: cover;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-block;
+}
+
 
 
