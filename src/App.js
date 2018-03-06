@@ -18,8 +18,8 @@ class App extends Component {
   constructor(props){
         super(props);
         DynamoDB.AWS.config.update({
-            accessKeyId: 'AKIAJZKTIFNGRZ6SWE6A',
-            secretAccessKey: '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',
+            accessKeyId: '',
+            secretAccessKey: '',
             region: 'us-west-2'
         });
         //Initialize
