@@ -1,5 +1,4 @@
 import React from 'react';
-import './SuggestedVideos.css';
 import Thumbnail from './Thumbnail/Thumbnail';
 
 const suggestedVideos= (props) => {
@@ -15,7 +14,14 @@ const suggestedVideos= (props) => {
                 })
                
             }
-            
+            <style jsx>{`
+                .side-panel {
+                    float: right;
+                    width: 400px;
+                    margin-left: 20px;
+                }
+        `}
+        </style>
         </div>
     );
 } 

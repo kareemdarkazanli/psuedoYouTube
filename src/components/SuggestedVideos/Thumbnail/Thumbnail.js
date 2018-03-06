@@ -1,5 +1,4 @@
 import React from 'react';
-import './Thumbnail.css';
 
 const thumbnail = (props) => {
     
@@ -11,6 +10,35 @@ const thumbnail = (props) => {
                 <p className="video-title">{props.title}</p>
                 <p className="channel-title">{props.channelTitle}</p>
             </div>
+            <style jsx>{`
+                .thumbnail {
+                    margin-left: 5px;
+                    object-fit: cover;
+                    position: relative;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    display: inline-block;
+                }
+
+                .video-title {
+                    font-size: 15px;
+                    font-weight: bolder;
+                    overflow-wrap: normal;
+                    overflow: hidden;
+                    width: 225px;
+                    vertical-align: top;
+                    margin-top: 10px;
+                }
+
+                .channel-title {
+                    font-size: 12px;
+                    color: grey;
+                    font-weight: lighter;
+                    vertical-align: top;
+                    margin-top: -10px;
+                }
+        `}
+        </style>
         </div>
     );
     

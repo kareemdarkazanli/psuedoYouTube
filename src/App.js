@@ -8,24 +8,24 @@ import SearchYouTube from 'youtube-search-api-with-axios';
 import WatchHistory from './components/WatchHistory/WatchHistory'
 import Axios from 'axios';
 import DynamoDB from 'dynamoose';
-import './App.css';
+import { connect } from 'react-redux';
+import * as actionTypes from './store/actions';
 
 class App extends Component {
 
-
+    
 
   constructor(props){
         super(props);
         DynamoDB.AWS.config.update({
-            accessKeyId: '',
-            secretAccessKey: '',
+            accessKeyId: 'AKIAJZKTIFNGRZ6SWE6A',
+            secretAccessKey: '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',
             region: 'us-west-2'
         });
         //Initialize
-        this.searchQuery = "hp";
+        //this.searchQuery = "hp";
         this.getSearchQuery();
-        console.log(DynamoDB.AWS.config);
-        
+
       
         
   }
@@ -38,16 +38,15 @@ class App extends Component {
         watchHistory: []
   }
   
-  
 
-  searchChangedHandler = (event) => {
+  /*searchChangedHandler = (event) => {
         this.searchQuery = event.target.value;
         
-  }
+  }*/
   
   getSearchQuery = () => {
-      
-      SearchYouTube({key: "", q: this.searchQuery, maxResults: 21}, (vids) => {
+      console.log(this.props.searchQuery);
+      SearchYouTube({key: "AIzaSyBDylHNn4FIm4ekIMLjbdb4hgUi5jhxaB4", q: this.props.searchQuery, maxResults: 21}, (vids) => {
           console.log(vids);
           this.setState({
               videos: vids
@@ -82,7 +81,8 @@ class App extends Component {
       var History = DynamoDB.model('History', { videoId: String, title: String, channelTitle: String, thumbnailURL: String});
 
       new History({videoId: vidId, title: title, channelTitle: channelTitle, thumbnailURL: thumbnailURL}).save( () => {
-         this.retrieveWatchHistoryFromDatabase();
+         //this.props.retrieveWatchHistoryFromDatabase();
+          this.retrieveWatchHistoryFromDatabase();
       });
       
   }
@@ -107,7 +107,7 @@ class App extends Component {
   retrieveTopComments = (vidId) => {
       
       
-        Axios.get('https://www.googleapis.com/youtube/v3/commentThreads?key=&part=snippet,replies&videoId=' + vidId).then( response => {
+        Axios.get('https://www.googleapis.com/youtube/v3/commentThreads?key=AIzaSyBDylHNn4FIm4ekIMLjbdb4hgUi5jhxaB4&part=snippet,replies&videoId=' + vidId).then( response => {
             
             var Comment = function() {
                 this.authorDisplayName =  "";
@@ -135,7 +135,7 @@ class App extends Component {
   }
   
   retrieveVideoDetails = (vidId) => {
-      Axios.get('https://www.googleapis.com/youtube/v3/videos?key=&part=snippet,contentDetails,statistics&id='+vidId).then( response => {
+      Axios.get('https://www.googleapis.com/youtube/v3/videos?key=AIzaSyBDylHNn4FIm4ekIMLjbdb4hgUi5jhxaB4&part=snippet,contentDetails,statistics&id='+vidId).then( response => {
                       
           var Details = function() {
                 this.channelTitle =  "";
@@ -171,7 +171,7 @@ class App extends Component {
       
     return (
       <div>
-        <NavBar click={this.getSearchQuery} changed={this.searchChangedHandler}/>
+        <NavBar click={this.getSearchQuery} changed={this.props.searchChangedHandler}/>
         <div className="row">
         {
             this.state && this.state.videos && <SuggestedVideos click={this.videoSelected} currentVideoId={this.state.videoId} suggestedVideos={this.state.videos}/>
@@ -187,13 +187,33 @@ class App extends Component {
         this.state.videoId.length > 0 && <CommentSection comments={this.state.topComments}/>
         }
         {
-        this.state.videoId.length > 0 &&  <WatchHistory history={this.state.watchHistory} click={this.videoSelected} />
+        this.state.watchHistory.length > 0 &&  <WatchHistory history={this.state.watchHistory} click={this.videoSelected} />
         }
         </div>
-        
+        <style jsx>{`
+            .row {
+                max-width: 1140px;
+                margin: 0 auto;
+            }
+        `}
+        </style>
       </div>
     );
   }
 }
 
-export default App;
+
+const mapStateToProps = state => {
+    return {
+        searchQuery: state.searchQuery
+    };
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        searchChangedHandler: (event) => dispatch({type: "SEARCH_CHANGED", event: event})
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+//export default App;

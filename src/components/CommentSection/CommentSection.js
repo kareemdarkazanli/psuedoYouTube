@@ -1,5 +1,4 @@
 import React from 'react';
-import './CommentSection.css';
 import Comment from './Comment/Comment';
 
 const commentSection = (props) => (
@@ -10,6 +9,13 @@ const commentSection = (props) => (
           })
                
         }
+        <style jsx>{`
+            .comment-section {
+                width: 640px;
+                margin-top: 20px;
+            }
+        `}
+        </style>
     </div>
 );
 
